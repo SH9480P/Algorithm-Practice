@@ -93,12 +93,25 @@ int check_sync(int clock[])
 
 void recursive(int clock[] ,int* res, int cnt, int checklist[])
 {
-	for (int i = 0; i < 10; i++)
+	int i, j = 0;
+	if (cnt != 0) {
+		for (j = 9; j >= 0; j--)
+		{
+			if (checklist[j] == 0)
+				continue;
+			else
+			{
+				break;
+			}
+		}
+	}
+
+	for (i = j; i < 10; i++)
 	{
 		int tmpclock[16], tmplist[10];
 		deep_copy(clock, tmpclock, 16);
 		deep_copy(checklist, tmplist, 10);
-		if (checklist[i] < 4)
+		if (checklist[i] < 3)
 		{
 			control_clock(tmpclock, i);
 			cnt++;
@@ -109,7 +122,12 @@ void recursive(int clock[] ,int* res, int cnt, int checklist[])
 					*res = cnt;
 				return;
 			}
+			printf("%d\n", cnt);
+			printf("%d\n", tmplist[i]);
+			/*if (cnt > 6)
+				return;*/
 			recursive(tmpclock, res, cnt, tmplist);
+			cnt--;
 		}
 	}
 }
@@ -120,7 +138,7 @@ int main()
 	int clock[16];
 	int checklist[10] = { 0 };
 	int c;
-	int cnt = 0, result = 30;
+	int cnt = 0, result = 31;
 	for (int i = 0; i < 16; i++)
 	{
 		scanf("%d", &c);
@@ -129,6 +147,6 @@ int main()
 
 	recursive(clock, &result, cnt, checklist);
 
-	printf("%d\n", result);
+	printf("result: %d\n", result);
 	return 0;
 }
