@@ -75,6 +75,17 @@ int full_check(vector<vector<char>> board, int h, int w)
 	return 0;
 }
 
+void vector_clear(vector<vector<char>> board, int h, int w)
+{
+	for (int i = 0; i < h; i++)
+	{
+		board[i].clear();
+		vector<char>().swap(board[i]);
+	}
+	board.clear();
+	vector<vector<char>>().swap(board);
+}
+
 int recursive(vector<vector<char>> board, int h, int w, int idx, int* res)
 {
 	if (idx >= h * w)
@@ -92,12 +103,12 @@ int recursive(vector<vector<char>> board, int h, int w, int idx, int* res)
 	col = idx % w;
 
 	//pass
-	if (!invalid(board, h, w, row, col, 0)) {
-		recursive(temp, h, w, idx + 1, res);
-	}
+	recursive(temp, h, w, idx + 1, res);
+	
 	//1
 	if (!invalid(board, h, w, row, col, 1))
 	{
+		temp = board;
 		temp[row][col] = '/';
 		temp[row - 1][col] = '/';
 		temp[row][col + 1] = '/';
@@ -130,6 +141,9 @@ int recursive(vector<vector<char>> board, int h, int w, int idx, int* res)
 		temp[row][col - 1] = '/';
 		recursive(temp, h, w, idx + 1, res);
 	}
+
+	vector_clear(temp, h, w);
+	vector_clear(board, h, w);
 	
 }
 
